@@ -1,6 +1,11 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import morgan, { Options } from "morgan";
+import { config } from "./config";
+config();
+
+// import db from "./db/mysql";
+
 // 라우터
 import prductRouter from "./routes/products";
 import shopRouter from "./routes/shop";
@@ -13,9 +18,10 @@ const morganOption: Options<Request, Response> = {
 		return req.url.endsWith(".css");
 	},
 };
-
 const app = express();
 app.use(morgan("dev", morganOption));
+
+// db.query("select 1;").then(rows => console.log(rows));
 
 // body
 app.use(bodyParser.urlencoded({ extended: false }));

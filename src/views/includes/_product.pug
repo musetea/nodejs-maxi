@@ -1,13 +1,13 @@
 article.item 
     header 
-        h1 #{product.name}
+        h2 #{product.title}
     .image 
-        img(src=product.img, alt=product.name)
+        img(src=product.imageUrl, alt=product.title)
     .content 
         h2= product.price 
         p= product.description 
     .actions 
-        form#edit(action=`/products/edit/${ encodeURI(product.name)}`, method="GET") 
+        form#edit(action=`/products/edit/${ encodeURI(product.id)}`, method="GET") 
             button(type="submit") Edit
         form#delete(action=`/products/delete/${encodeURI(product.id)}` , method="POST")  
             button(type="submit") Delete

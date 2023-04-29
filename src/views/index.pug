@@ -8,9 +8,9 @@ mixin card(product)
     //- #{JSON.stringify(product)}
     .card 
         header 
-            h1= product.name
+            h1= product.title
         .image 
-            img(src=product.img, alt=product.name)
+            img(src=product.imageUrl, alt=product.title)
         .content 
             h2= product.price 
             p= product.description

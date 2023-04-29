@@ -7,7 +7,8 @@ export const getProducts = async (
 	next: NextFunction
 ) => {
 	// res.sendFile(shopDir);
-	const items = await getItems();
+	// const items = await getItems();
+	const items = await Product.getAllProducts();
 	res.render("products", {
 		products: items,
 		docTitle: "Product's",
@@ -38,7 +39,7 @@ export const getAddProduct = async (
 	console.log(req.url, req.params);
 	const name = req.params.name;
 	const products = await getItems();
-	const item = products.find(p => p.name === name);
+	const item = products.find(p => p.title === name);
 
 	res.render("product/add", {
 		path: "products",
@@ -53,9 +54,10 @@ export const getEditProduct = async (
 	next: NextFunction
 ) => {
 	console.log(req.url, req.params);
-	const name = req.params.name;
-	const products = await getItems();
-	const item = products.find(p => p.name === name);
+	const id = req.params.id;
+	// const products = await getItems();
+	// const item = products.find(p => p.title === name);
+	const item = await Product.getProduct(id);
 
 	res.render("product/edit", {
 		product: item,
@@ -74,7 +76,7 @@ export const getProductById = async (
 	const item = products.find(p => p.id === id);
 
 	res.render("product/detail", {
-		docPage: `${item?.name}  Detail Page`,
+		docPage: `${item?.title}  Detail Page`,
 		product: item,
 		path: "products",
 	});

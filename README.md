@@ -54,3 +54,32 @@ app.use(bodyParser.json()); // json
 - Models
 - Views
 - Controllers
+
+## 데이터베이스
+
+- SQL : mySql
+  - 테이블 기준의 관계.
+- NoSQL: MongoDB
+  - 컬렉션, 중복허용
+- 스케일링
+  - 수직 : 메모리,cpu 를 늘려서 확장. -> SQL
+  - 수평 : 데이터베이스 서버를 확장. -> NO SQL
+    -MySQL
+
+```sh
+	npm i mysql2
+```
+
+```ts
+const mysql = require("mysql2");
+// create the pool
+const pool = mysql.createPool({
+	host: "localhost",
+	user: "root",
+	database: "test",
+});
+// now get a Promise wrapped instance of that pool
+const promisePool = pool.promise();
+// query database using promises
+const [rows, fields] = await promisePool.query("SELECT 1");
+```
