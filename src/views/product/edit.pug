@@ -1,0 +1,26 @@
+extends ../base 
+
+
+block head
+    link(rel="stylesheet", href="/css/products.css")
+    link(rel="stylesheet", href="/css/form.css")
+
+block content 
+    h1 Product Edit 
+    //- #{JSON.stringify(product)}
+    form(action=`/products/edit/${product.id}`, method="POST") 
+        .control 
+            label(for="title") TITLE 
+            input#title(type="text", name="title", value=`${product.name}` )
+        .control 
+            label(for="image") IMAGE URL 
+            input#image(type="url", name="image" value=`${product.img}`)
+        .control 
+            label(for="price") PRICE 
+            input#price(type="number", name="price", value=`${+product.price}`)
+        .control 
+            label(for="description") DESCRIPTION 
+            textarea#description(name="description", cols="30", rows="10")
+                #{product.description}
+        .actions 
+            button(type="submit") Edit

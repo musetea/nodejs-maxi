@@ -1,0 +1,23 @@
+extends base 
+
+block head
+    link(rel="stylesheet", href="/css/users.css")
+
+block content
+    h1 User's 
+    section 
+        h2 사용자 등록
+        form(action="/users/add", method="POST") 
+            .control 
+                label(for="name") User Name 
+                input#name(type="text", name="username") 
+            .control 
+                label(for="email") User Email 
+                input#email(type="email", name="useremail") 
+            .control 
+                label(for="password") User Password 
+                input#password(type="password", name="userpassword") 
+            .actions 
+                button Add User
+    section 
+        h2 사용자 목록

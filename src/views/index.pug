@@ -1,0 +1,35 @@
+extends base
+block  head
+    link(rel="stylesheet", href="/css/index.css")
+    title #{docTitle}
+
+
+mixin card(product)
+    //- #{JSON.stringify(product)}
+    .card 
+        header 
+            h1= product.name
+        .image 
+            img(src=product.img, alt=product.name)
+        .content 
+            h2= product.price 
+            p= product.description
+        .actions 
+            button 
+                a(href=`/products/${product.id}`) Detail 
+            form(action="/cart", method="POST") 
+                input(type="hidden", name="price", value=product.price)
+                input(type="hidden", name="id", value=product.id)
+                input#quentity(type="number", name="quentity",value=1, min=1, max=10, step=1)
+                button(type="submit") Add to Cart
+
+block content
+    h2 Shop 
+    .grid 
+        each product in products
+            +card(product)
+
+    h2 User 
+    .grid 
+
+    

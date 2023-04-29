@@ -1,0 +1,12 @@
+extends base 
+
+block head
+    link(rel="stylesheet", href="/css/add-user.css")
+
+block content 
+    form(action="/users/add", method="POST") 
+        .control 
+            label(for="username") User Name 
+            input#username(type="text", name="username") 
+        .actions 
+            button Add User

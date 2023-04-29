@@ -1,0 +1,32 @@
+section {
+	margin: 1rem 0;
+}
+
+section ul {
+	padding: 1rem;
+}
+section ul li {
+	border: 1px solid gray;
+}
+
+article.item {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 0.5rem;
+}
+article.item header {
+	width: 150px;
+}
+article.item .image {
+	max-width: 200px;
+}
+article.item .image img {
+	width: 100%;
+}
+article.item .content {
+	flex-grow: 3;
+}
+article.item .actions {
+	width: 150px;
+}

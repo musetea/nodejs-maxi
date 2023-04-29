@@ -1,0 +1,25 @@
+extends ../base 
+
+
+block head
+    link(rel="stylesheet", href="/css/products.css")
+    link(rel="stylesheet", href="/css/form.css")
+
+block content 
+    h1 제품 등록
+    //- #{JSON.stringify(product)}
+    form(action="/products", method="POST") 
+        .control 
+            label(for="title") TITLE 
+            input#title(type="text", name="title" )
+        .control 
+            label(for="image") IMAGE URL 
+            input#image(type="url", name="image")
+        .control 
+            label(for="price") PRICE 
+            input#price(type="number", name="price")
+        .control 
+            label(for="description") DESCRIPTION 
+            textarea#description(name="description", cols="30", rows="10")
+        .actions 
+            button(type="submit") Add to Product

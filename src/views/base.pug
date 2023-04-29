@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/css/main.css")
+        title #{docPage}
+        block head
+    body 
+        header 
+            nav
+                ul
+                    li 
+                        a(class=`${path === "index" ? "active" : "" }`, href="/") Shop
+                    li
+                        a(class=`${path === "products" ? "active" : "" }`, href="/products") Products
+                    li
+                        a(class=`${path === "cart" ? "active" : "" }`, href="/cart") Cart
+                    li 
+                        a(href="/users", class=`${path === "Users" ? "active" : "" }`) Users 
+
+
+        main 
+            block content 
+
+
+        footer 
+            p copyright
