@@ -16,17 +16,26 @@ article.item {
 	gap: 0.5rem;
 }
 article.item header {
-	width: 150px;
+	width: 20%;
 }
 article.item .image {
+	width: 30%;
 	max-width: 200px;
 }
 article.item .image img {
 	width: 100%;
 }
 article.item .content {
-	flex-grow: 3;
+	width: 30%;
 }
 article.item .actions {
-	width: 150px;
+	width: 20%;
+}
+
+.image {
+	max-height: 20rem;
+	overflow: hidden;
+}
+.image img {
+	height: 100%;
 }

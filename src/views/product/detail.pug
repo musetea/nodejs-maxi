@@ -3,10 +3,13 @@ extends ../base
 block head 
 
 block content 
-    h1 #{product.name} Detail Page 
+
+    #{JSON.stringify(product)}
+
+    h1 #{product.title} Detail Page 
     hr
     .image 
-        img(src=product.img, alt=product.name)
+        img(src=product.imageUrl, alt=product.title)
     h2= product.price 
     p= product.description
     .actions 

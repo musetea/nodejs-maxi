@@ -8,43 +8,37 @@ import { CreationOptional } from "sequelize";
 
 import sequelize from "../db/sequelize";
 
-interface ProductModel
+interface UserModel
 	extends Model<
-		InferAttributes<ProductModel>,
-		InferCreationAttributes<ProductModel>
+		InferAttributes<UserModel>,
+		InferCreationAttributes<UserModel>
 	> {
 	// Some fields are optional when calling UserModel.create() or UserModel.build()
 	id: CreationOptional<number>;
-	title: string;
-	price: number;
-	description: string;
-	imageUrl: string;
-	userId?: number;
+	name: string;
+	email: string;
+	password?: string;
 }
 
-const Product = sequelize.define<ProductModel>("product", {
+const User = sequelize.define("user", {
 	id: {
 		type: DataTypes.INTEGER.UNSIGNED,
 		unique: true,
 		autoIncrement: true,
 		primaryKey: true,
+		allowNull: false,
 	},
-	title: {
+	name: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	price: {
-		type: DataTypes.DOUBLE,
-		allowNull: false,
-	},
-	imageUrl: {
+	email: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	description: {
+	password: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 	},
 });
-
-export default Product;
+export default User;

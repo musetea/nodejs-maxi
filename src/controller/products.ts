@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import Product, { getProducts as getItems } from "../models/products";
+import { title } from "process";
+// import Product, { getProducts as getItems } from "../models/products_mysql";
+import Product from "../models/products";
 
 export const getProducts = async (
 	req: Request,
@@ -8,7 +10,8 @@ export const getProducts = async (
 ) => {
 	// res.sendFile(shopDir);
 	// const items = await getItems();
-	const items = await Product.getAllProducts();
+	// const items = await Product.getAllProducts();
+	const items = await Product.findAll();
 	res.render("products", {
 		products: items,
 		docTitle: "Product's",
@@ -25,9 +28,25 @@ export const addProduct = async (
 	if (!title || !price || !image || !description) {
 		return res.status(400).redirect("/products");
 	}
+	console.log(req?.user?.id);
+	// const p = new Product(title, price, image, description);
+	// await p.save();
 
-	const p = new Product(title, price, image, description);
-	await p.save();
+	const result = await req.user.createProduct({
+		title,
+		price,
+		description,
+		imageUrl: image,
+	});
+
+	// const result = await Product.create({
+	// 	title,
+	// 	price,
+	// 	description,
+	// 	imageUrl: image,
+	// 	userId: req?.user?.id,
+	// });
+	console.log(result);
 	res.status(201).redirect("/products");
 };
 
@@ -38,8 +57,8 @@ export const getAddProduct = async (
 ) => {
 	console.log(req.url, req.params);
 	const name = req.params.name;
-	const products = await getItems();
-	const item = products.find(p => p.title === name);
+	// const products = await getItems();
+	// const item = products.find(p => p.title === name);
 
 	res.render("product/add", {
 		path: "products",
@@ -57,10 +76,10 @@ export const getEditProduct = async (
 	const id = req.params.id;
 	// const products = await getItems();
 	// const item = products.find(p => p.title === name);
-	const item = await Product.getProduct(id);
-
+	// const item = await Product.getProduct(id);
+	const product = await Product.findByPk(id);
 	res.render("product/edit", {
-		product: item,
+		product: product,
 		path: "products",
 	});
 };
@@ -72,12 +91,13 @@ export const getProductById = async (
 ) => {
 	console.log(req.url, req.params);
 	const id = req.params.id;
-	const products = await getItems();
-	const item = products.find(p => p.id === id);
+	// const products = await getItems();
+	// const item = products.find(p => p.id === id);
+	const product = await Product.findByPk(id);
 
 	res.render("product/detail", {
-		docPage: `${item?.title}  Detail Page`,
-		product: item,
+		docPage: `${product?.title}  Detail Page`,
+		product: product,
 		path: "products",
 	});
 };
@@ -97,8 +117,18 @@ export const postProduct = async (
 	// 	return res.status(404).redirect("/products");
 	// }
 	// products[idx]
-	const item = new Product(title, +price, image, description);
-	await item.update(id);
+	// const item = new Product(title, +price, image, description);
+	// await item.update(id);
+	// const p = await Product.findByPk(id);
+	const items = await Product.findAll({ where: { id: id } });
+	const p = items[0];
+	if (p) {
+		p.title = title;
+		p.price = price;
+		p.imageUrl = image;
+		p.description = description;
+		await p.save();
+	}
 
 	res.status(200).redirect("/products");
 };
@@ -113,7 +143,9 @@ export const removeProduct = async (
 	if (!id) {
 		return res.status(400).redirect("/products");
 	}
-	await Product.remove(id);
+	// await Product.remove(id);
+	const p = await Product.findByPk(id);
+	p?.destroy();
 
 	res.status(204).redirect("/products");
 };

@@ -83,3 +83,31 @@ const promisePool = pool.promise();
 // query database using promises
 const [rows, fields] = await promisePool.query("SELECT 1");
 ```
+
+## sequelize
+
+- Object-Relational Mapping Library
+
+```sh
+	npm i sequelize
+	npm i @types/sequelize
+```
+
+```ts
+	const { Sequelize } = require('sequelize');
+	const sequelize = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
+	// 연결
+	try {
+		await sequelize.authenticate();
+		console.log('Connection has been established successfully.');
+	} catch (error) {
+		console.error('Unable to connect to the database:', error);
+	}
+	});
+	// 연결해지
+	await sequelize.close()
+```
+
+## 몽고디비

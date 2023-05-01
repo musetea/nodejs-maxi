@@ -2,4 +2,10 @@ extends base
 
 block content
     h1 Cart
-    #{JSON.stringify(cart)}
+    #{JSON.stringify(products)}
+    ul 
+        //- each product in products
+            //- li=product.title
+
+    form(action="/order", method="GET")
+        button(type="submit") Order Now!

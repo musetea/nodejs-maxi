@@ -1,28 +1,43 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import morgan, { Options } from "morgan";
 import { config } from "./config";
 config();
-
-// import db from "./db/mysql";
 
 // 라우터
 import prductRouter from "./routes/products";
 import shopRouter from "./routes/shop";
 import userRouter from "./routes/users";
 import cartRouter from "./routes/cart";
+import orderRouter from "./routes/order";
 
 import path from "path";
+import User from "./models/user";
+
 const morganOption: Options<Request, Response> = {
 	skip: function (req: Request, res: Response) {
 		return req.url.endsWith(".css");
 	},
 };
+
+declare global {
+	namespace Express {
+		interface Request {
+			user: any;
+		}
+	}
+}
+
 const app = express();
 app.use(morgan("dev", morganOption));
 
 // db.query("select 1;").then(rows => console.log(rows));
 
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+	const user = await User.findByPk(1);
+	req.user = user;
+	next();
+});
 // body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -40,6 +55,7 @@ app.set("views", viewDir);
 app.use("/", shopRouter);
 app.use("/products", prductRouter);
 app.use("/cart", cartRouter);
+app.use("/order", orderRouter);
 app.use("/users", userRouter);
 
 app.use("*", (req, res, next) => {

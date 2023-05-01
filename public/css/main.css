@@ -71,3 +71,10 @@ footer {
 	padding: 1rem;
 	background-color: aliceblue;
 }
+
+button {
+	margin: 0.25rem;
+	padding: 0.5rem 1rem;
+	background-color: lightblue;
+	color: white;
+}
