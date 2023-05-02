@@ -4,18 +4,28 @@ import app from "./app";
 
 // import db from "./db/mysql";
 import sequelize from "./db/sequelize";
-import Product from "./models/products";
-import User from "./models/user";
+import Product from "./models/products_sequelize";
+import User from "./models/user_sequlize";
 import Cart from "./models/cart";
 import CartItem from "./models/cart-item";
 import Order from "./models/order";
 import OrderItem from "./models/order-item";
+// 몽고디비
+import MongoConnect from "./db/mongo";
 
 const PORT = 3003;
 let server: any;
-server = app.listen(PORT, () => {
-	console.log("Express Web Server " + PORT + " Running...");
-});
+
+MongoConnect()
+	.then(conn => {
+		// console.log(conn);
+		server = app.listen(PORT, () => {
+			console.log("Express Web Server " + PORT + " Running...");
+		});
+	})
+	.catch(err => {
+		console.log(err);
+	});
 
 /**
  * 처리되지 않은 예외 처리

@@ -1,11 +1,25 @@
 extends base 
+block head
+    link(rel="stylesheet", href="/css/cart.css")
 
 block content
     h1 Cart
-    #{JSON.stringify(products)}
-    ul 
-        //- each product in products
-            //- li=product.title
+    //- #{JSON.stringify(products)}
+    .container 
+        table.basic 
+            caption 주문내역
+            tr 
+                th 제품명
+                th 제품이미지
+                th 가격
+                th 수량
+            each product in products
+                tr.item 
+                    td.title= product.title
+                    td.image 
+                        img(src=product.imageUrl, alt=product.name)
+                    td.price= product.price 
+                    td.qty= product.quentity
 
     form(action="/order", method="GET")
         button(type="submit") Order Now!

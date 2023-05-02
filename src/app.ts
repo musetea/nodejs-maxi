@@ -12,6 +12,7 @@ import cartRouter from "./routes/cart";
 import orderRouter from "./routes/order";
 
 import path from "path";
+// import User from "./models/user";
 import User from "./models/user";
 
 const morganOption: Options<Request, Response> = {
@@ -34,8 +35,15 @@ app.use(morgan("dev", morganOption));
 // db.query("select 1;").then(rows => console.log(rows));
 
 app.use(async (req: Request, res: Response, next: NextFunction) => {
-	const user = await User.findByPk(1);
-	req.user = user;
+	// const user = await User.findByPk(1);
+	const info = await User.getById("644fe3dac80fdd53f10cfb26");
+	console.log(info);
+	req.user = new User(
+		info.name || "",
+		info.email || "",
+		info.id?.toString() || "",
+		info.cart || null
+	);
 	next();
 });
 // body

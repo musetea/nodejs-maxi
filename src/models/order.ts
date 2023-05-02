@@ -1,5 +1,9 @@
+import { ObjectId } from "bson";
 import { DataTypes, Sequelize } from "sequelize";
+import { getDb } from "../db/mongo";
 import sequelize from "../db/sequelize";
+
+const COLLECTION = "orders";
 
 const Order = sequelize.define("order", {
 	id: {
@@ -11,3 +15,9 @@ const Order = sequelize.define("order", {
 });
 
 export default Order;
+
+export const getOrder = async () => {
+	const db = getDb();
+
+	return await db.collection(COLLECTION).find().toArray();
+};
