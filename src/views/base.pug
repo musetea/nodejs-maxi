@@ -8,20 +8,30 @@ html(lang="en")
         title #{docPage}
         block head
     body 
-        header 
-            nav
+        header.main-header 
+            nav.menus
                 ul
                     li 
                         a(class=`${path === "index" ? "active" : "" }`, href="/") Shop
-                    li
-                        a(class=`${path === "products" ? "active" : "" }`, href="/products") Products
-                    li
-                        a(class=`${path ==="cart" ? "active" : "" }`, href="/cart") Cart
-                    li
-                        a(class=`${path === "order" ? "active" : "" }`, href="/order") Order
-                    li 
-                        a(href="/users", class=`${path === "Users" ? "active" : "" }`) Users 
+                    if isAuthenticated
+                        li
+                            a(class=`${path === "products" ? "active" : "" }`, href="/products") Products
+                        li
+                            a(class=`${path ==="cart" ? "active" : "" }`, href="/cart") Cart
+                        li
+                            a(class=`${path === "order" ? "active" : "" }`, href="/order") Order
+                        li 
+                            a(href="/users", class=`${path === "Users" ? "active" : "" }`) Users 
 
+            nav.auth
+                ul
+                    if !isAuthenticated
+                        li 
+                            a(class=`${path === "login" ? "active" : "" }`, href="/auth/login") Login
+                    else
+                        li
+                            form(action="/auth/logout" method="POST")  
+                                button(type="submit")  Logout
 
         main 
             block content 

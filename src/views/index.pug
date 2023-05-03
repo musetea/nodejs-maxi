@@ -5,10 +5,10 @@ block  head
 
 
 mixin card(product)
-    #{JSON.stringify(product)}
+    //- #{JSON.stringify(product)}
     .card 
-        header 
-            h1= product.title
+        .head 
+            h3= product.title
         .image 
             img(src=product.imageUrl, alt=product.title)
         .content 
@@ -20,8 +20,9 @@ mixin card(product)
             form(action="/cart", method="POST") 
                 input(type="hidden", name="price", value=product.price)
                 input(type="hidden", name="id", value=product.id)
-                input#quentity(type="number", name="quentity",value=1, min=1, max=10, step=1)
-                button(type="submit") Add to Cart
+                if isAuthenticated 
+                    input#quentity(type="number", name="quentity",value=1, min=1, max=10, step=1)
+                    button(type="submit") Add to Cart
 
 block content
     h2 Shop 

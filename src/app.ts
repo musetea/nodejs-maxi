@@ -1,5 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser"; // 쿠키
+import session, { SessionData } from "express-session";
+const MongoDBSessionStore = require("connect-mongodb-session")(session);
 import morgan, { Options } from "morgan";
 import { config } from "./config";
 config();
@@ -10,16 +13,28 @@ import shopRouter from "./routes/shop";
 import userRouter from "./routes/users";
 import cartRouter from "./routes/cart";
 import orderRouter from "./routes/order";
+import authRouter from "./routes/auth";
 
 import path from "path";
 // import User from "./models/user";
-import User from "./models/user";
+// import User from "./models/user";
+import User from "./models/mongoose/user";
+import { Mongoose } from "mongoose";
 
 const morganOption: Options<Request, Response> = {
 	skip: function (req: Request, res: Response) {
-		return req.url.endsWith(".css");
+		const re = req.url.endsWith(".css") || req.url.endsWith(".ico");
+		return re;
 	},
 };
+const SESSION_SECRET = process.env.SESSIONS_SECRET || "";
+// console.log(SESSION_SECRET);
+const password = process.env.MONGDB_PASSWORD || "";
+const host = process.env.MONGODB_URL!.replace("<password>", escape(password));
+const db = process.env.MONGODB_DB;
+const dummy = process.env.MONGODB_URL_DUMMY;
+const url = `${host}${db}${dummy}`;
+// console.log(url);
 
 declare global {
 	namespace Express {
@@ -28,22 +43,48 @@ declare global {
 		}
 	}
 }
+declare module "express-session" {
+	interface SessionData {
+		isLogin: boolean;
+	}
+}
+// console.log(global);
 
 const app = express();
 app.use(morgan("dev", morganOption));
+app.use(cookieParser());
+// 섹션 미들웨어
 
+const store = new MongoDBSessionStore({
+	uri: url,
+	session: "sessions",
+});
+// console.log(store);
+app.use(
+	session({
+		secret: SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		// cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
+		store: store,
+	})
+);
 // db.query("select 1;").then(rows => console.log(rows));
 
 app.use(async (req: Request, res: Response, next: NextFunction) => {
+	// console.log(req.cookies);
 	// const user = await User.findByPk(1);
-	const info = await User.getById("644fe3dac80fdd53f10cfb26");
-	console.log(info);
-	req.user = new User(
-		info.name || "",
-		info.email || "",
-		info.id?.toString() || "",
-		info.cart || null
-	);
+	// const info = await User.getById("644fe3dac80fdd53f10cfb26");
+	// console.log(req.session);
+	const user = await User.findById("644fe3dac80fdd53f10cfb26");
+	req.user = user;
+	// console.log(info);
+	// req.user = new User(
+	// 	info.name || "",
+	// 	info.email || "",
+	// 	info.id?.toString() || "",
+	// 	info.cart || null
+	// );
 	next();
 });
 // body
@@ -65,6 +106,7 @@ app.use("/products", prductRouter);
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 app.use("*", (req, res, next) => {
 	// res.sendFile(path.join(__dirname, "./views", "404.html"));

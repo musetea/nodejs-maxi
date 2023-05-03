@@ -12,11 +12,15 @@ import Order from "./models/order";
 import OrderItem from "./models/order-item";
 // 몽고디비
 import MongoConnect from "./db/mongo";
+import { MongooseConnect } from "./db/mongoose";
+import ConnectDb from "./db/mongoose2";
 
 const PORT = 3003;
 let server: any;
 
-MongoConnect()
+// MongoConnect()
+MongooseConnect()
+	// ConnectDb()
 	.then(conn => {
 		// console.log(conn);
 		server = app.listen(PORT, () => {

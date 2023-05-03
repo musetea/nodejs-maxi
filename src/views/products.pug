@@ -10,26 +10,9 @@ block content
     section
         button 
             a(href="/products/add") Add to Product
-    //- section 
-    //-     h2  제품등록
-    //-     form(action="/products", method="POST") 
-    //-         .control 
-    //-             label(for="title") TITLE 
-    //-             input#title(type="text", name="title") 
-    //-         .control 
-    //-             label(for="image") IMAGE URL 
-    //-             input#image(type="url", name="image")
-    //-         .control 
-    //-             label(for="price") PRICE 
-    //-             input#price(type="number", name="price")
-    //-         .control 
-    //-             label(for="description") DESCRIPTION 
-    //-             textarea#description(name="description", cols="30", rows="10") 
-    //-         .actions 
-    //-             button(type="submit") Add Product
     section 
         h2 제품 목록
-        #{JSON.stringify(products)}
+        //- #{JSON.stringify(products)}
         ul 
             each product in products 
                 li

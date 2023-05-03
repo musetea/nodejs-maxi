@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 // import Cart, { getCart } from "../models/cart_mysql";
 import Cart from "../models/cart";
-import { addCart, getCart } from "../controller/cart";
+import { addCart, getCart, removeFromCart } from "../controller/cart";
 
 const router = Router();
 
@@ -10,5 +10,6 @@ router.get("/", getCart);
 
 // todo: 카트넣기
 router.post("/", addCart);
+router.post("/delete", removeFromCart);
 
 export default router;

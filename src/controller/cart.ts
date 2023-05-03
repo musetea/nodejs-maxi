@@ -11,12 +11,14 @@ export const getCart = async (
 	// console.log("cart", cart);
 	// const products = await cart?.getProducts();
 	// console.log("products", products);
-	const items = await req.user.getCart();
-	console.log(items);
+	// const items = await req.user.getCart();
+
+	const items = [];
+
 	res.status(200).render("cart", {
 		docPage: "cart",
 		path: "cart",
-		products: items,
+		products: [],
 	});
 };
 
@@ -39,4 +41,18 @@ export const addCart = async (
 	req.user.addToCart(id, quentity);
 
 	res.status(200).redirect("/");
+};
+
+export const removeFromCart = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const id = req.body.id;
+	if (!id) return res.status(400).redirect("/cart");
+
+	const reslut = await req.user.removeFromCart(id);
+	console.log(reslut);
+
+	res.status(204).redirect("/cart");
 };

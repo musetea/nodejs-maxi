@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+
 * {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+	font-family: "Open Sans", serif;
 }
 
 body {
@@ -25,6 +28,10 @@ header {
 	height: 3.5rem; /*56px*/
 	padding: 0 1.5rem;
 	background-color: #dbc441;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 header nav {
@@ -40,6 +47,9 @@ header nav ul {
 
 header nav li {
 	margin: 0 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 header nav li a {

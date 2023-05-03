@@ -1,8 +1,12 @@
 import { MongoClient, MongoClientOptions, Db } from "mongodb";
 
 const password = process.env.MONGDB_PASSWORD || "";
-const url = process.env.MONGODB_URL!.replace("<password>", escape(password));
-console.log(url);
+const host = process.env.MONGODB_URL!.replace("<password>", escape(password));
+const db = process.env.MONGODB_DB;
+const dummy = process.env.MONGODB_URL_DUMMY;
+const url = `${host}${db}${dummy}`;
+//console.log(url);
+
 const options: MongoClientOptions = {};
 let _db: Db;
 /**

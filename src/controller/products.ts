@@ -3,8 +3,13 @@ import { NextFunction, Request, Response } from "express";
 import { title } from "process";
 // import Product, { getProducts as getItems } from "../models/products_mysql";
 // import Product from "../models/products";
-import Product, { IProduct } from "../models/product";
+// import Product, { IProduct } from "../models/product";
+import Product from "../models/mongoose/product";
 
+export const getAllProducts = async () => {
+	const items = await Product.find({});
+	return items;
+};
 export const getProducts = async (
 	req: Request,
 	res: Response,
@@ -14,11 +19,13 @@ export const getProducts = async (
 	// const items = await getItems();
 	// const items = await Product.getAllProducts();
 	// const items = await Product.findAll();
-	const items = await Product.getAllProudcts();
+	// const items = await Product.getAllProudcts();
+	const items = await Product.find();
 	res.render("products", {
 		products: items,
 		docTitle: "Product's",
 		path: "products",
+		isAuthenticated: req.session.isLogin,
 	});
 };
 
@@ -47,9 +54,16 @@ export const addProduct = async (
 	// 	imageUrl: image,
 	// 	userId: req?.user?.id,
 	// });
-	const p = new Product(title, price, image, description, "");
-	await p.save();
-	console.log(p);
+	// const p = new Product(title, price, image, description, "");
+	// await p.save();
+	const result = await Product.create({
+		title,
+		price,
+		imageUrl: image,
+		description,
+		userId: req.user.id,
+	});
+	console.log(result);
 	res.status(201).redirect("/products");
 };
 
@@ -65,6 +79,7 @@ export const getAddProduct = async (
 
 	res.render("product/add", {
 		path: "products",
+		isAuthenticated: req.session.isLogin,
 	});
 };
 // https://api.api-ninjas.com/v1/randomimage?category=nature
@@ -81,11 +96,12 @@ export const getEditProduct = async (
 	// const item = products.find(p => p.title === name);
 	// const item = await Product.getProduct(id);
 	// const product = await Product.findByPk(id);
-	const item = await Product.getProduct(id);
-	console.log("getEditProduct", item);
+	// const item = await Product.getProduct(id);
+	const product = await Product.findById(id);
 	res.render("product/edit", {
-		product: item,
+		product: product,
 		path: "products",
+		isAuthenticated: req.session.isLogin,
 	});
 };
 
@@ -99,12 +115,14 @@ export const getProductById = async (
 	// const products = await getItems();
 	// const item = products.find(p => p.id === id);
 	// const product = await Product.findByPk(id);
-	const product = await Product.getProduct(id)!;
+	// const product = await Product.getProduct(id)!;
+	const product = await Product.findById(id);
 	console.log(product);
 	res.render("product/detail", {
 		docPage: `${""}  Detail Page`,
 		product: product,
 		path: "products",
+		isAuthenticated: req.session.isLogin,
 	});
 };
 
@@ -135,8 +153,20 @@ export const postProduct = async (
 	// 	p.description = description;
 	// 	await p.save();
 	// }
-	const item = new Product(title, price, image, description, id);
-	const update = await item.update(id);
+	// const item = new Product(title, price, image, description, id);
+	// const update = await item.update(id);
+
+	await Product.updateOne(
+		{ _id: id },
+		{
+			$set: {
+				title,
+				price,
+				imageUrl: image,
+				description,
+			},
+		}
+	);
 
 	res.status(200).redirect("/products");
 };
@@ -154,7 +184,12 @@ export const removeProduct = async (
 	// await Product.remove(id);
 	// const p = await Product.findByPk(id);
 	// p?.destroy();
-	const result = await Product.deleteOne(id);
+	// const result = await Product.deleteOne(id);
+	// console.log(result);
+	const result = await Product.deleteOne({
+		_id: id,
+	});
 	console.log(result);
+
 	res.status(204).redirect("/products");
 };

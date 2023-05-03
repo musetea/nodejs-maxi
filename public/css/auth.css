@@ -1,0 +1,27 @@
+h1 {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+.loginform {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.control {
+	margin: 0.5rem 0;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.control label,
+input {
+	display: block;
+}
+
+.control input {
+	width: 25rem;
+	margin: 0 auto;
+	padding: 0.5rem 1rem;
+}

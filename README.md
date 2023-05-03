@@ -111,3 +111,70 @@ const [rows, fields] = await promisePool.query("SELECT 1");
 ```
 
 ## 몽고디비
+
+- mongodb
+- mongoose
+- @types/... 추가설치 안해도 됨.
+
+## 쿠키 & 섹션
+
+### 쿠키설정
+
+```ts
+req.setHeader("Set-Cookie", "name=value");
+// express 에서 설정
+res.cookie("key", "value", { maxAge: 900000, httpOnly: true });
+```
+
+```sh
+	npm i cookie-parser
+	npm i @types/cookie-parser -D
+```
+
+```ts
+declare global {
+	namespace Express {
+		// Inject additional properties on express.Request
+		interface Request {
+			/**
+			 * This request's secret.
+			 * Optionally set by cookie-parser if secret(s) are provided.  Can be used by other middleware.
+			 * [Declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) can be used to add your own properties.
+			 */
+			secret?: string;
+		}
+	}
+}
+```
+
+### 셕션
+
+[EXPRESS-SESSION](https://github.com/expressjs/session)
+
+```sh
+	npm i express-session
+	npm i @types/express-session
+```
+
+- `resave:false` : 섹션이 변경되었을때만 저장됨.
+- `saveUninitialized:false` : - 초기화되지 않은 섹션은 저장 안함. 로그인,저장소사용량
+  등 도움됨.
+- [몽고디비 섹션 저장소](https://www.npmjs.com/package/connect-mongodb-session)
+
+```sh
+	npm i connect-mongodb-session
+	npm i @types/connect-mongodb-session
+	# redis
+	npm i connect-redis
+	npm i @types/connect-redis
+```
+
+```ts
+// 섹션에 변수 추가 정의
+
+declare module "express-session" {
+	interface SessionData {
+		isLogin: boolean;
+	}
+}
+```

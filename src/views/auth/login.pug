@@ -1,0 +1,16 @@
+extends ../base 
+
+block head
+    link(rel="stylesheet", href="/css/auth.css")
+block content
+    h1 Login 
+    form.loginform(action="/auth/login", method="POST")
+        .control 
+            label(for="email") Email 
+            input#email(type="email",  name="email")  
+        .control 
+            label(for="password") Password 
+            input#pass(type="password", name="password") 
+
+        .actions 
+            button(type="submit") Login
