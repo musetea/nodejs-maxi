@@ -18,3 +18,12 @@ export const sendMail = async (to: string, msg: string) => {
 		html: `<h1>${msg}!</h1>`,
 	});
 };
+
+export const sendMail2 = async (to: string, subject: string, html: string) => {
+	return await transport.sendMail({
+		from: "otggreen77@gmail.com",
+		to: to,
+		subject: subject,
+		html: html,
+	});
+};

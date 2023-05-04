@@ -20,6 +20,8 @@ type TUser = {
 	cart: {
 		items: TCart[];
 	};
+	resetToken: String | undefined;
+	resetTokenExpiration: Date | undefined;
 };
 
 interface IUserMethods {
@@ -59,6 +61,12 @@ const schema = new Schema<TUser>({
 				},
 			},
 		],
+	},
+	resetToken: {
+		type: String,
+	},
+	resetTokenExpiration: {
+		type: Date,
 	},
 });
 

@@ -1,0 +1,14 @@
+extends ../base
+block head
+    link(rel="stylesheet", href="/css/auth.css")
+block content
+    h1 Reset Password 
+    if error 
+        .error-msg
+            p=error
+    form.resetForm(action="/auth/reset", method="POST")
+        .control 
+            label(for="email") E-Mail 
+            input#email(type="email", name="email") 
+        .actions 
+            button(type="submit") Reset Password 

@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/mongoose/user";
 import { hash, genSalt, compare } from "bcrypt";
-import { sendMail } from "../utils/email";
+import { sendMail2 } from "../utils/email";
+import { randomBytes } from "crypto";
+import { EDESTADDRREQ } from "constants";
 
 /**
  * 로그인 폼 반환.
@@ -140,6 +142,129 @@ export const postSignup = async (
 	const result = await user.save();
 	// console.log(result);
 	res.redirect("/");
+};
+
+export const getResetPassword = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const msges = req.flash("error");
+	const payload = {
+		docPage: "Reset Password",
+		path: "reset",
+		// isAuthenticated: req.session.isLogin,
+		error: msges[0] ? msges[0] : null,
+	};
+	res.status(200).render("auth/reset", payload);
+};
+export const postResetPassword = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { email } = req.body;
+
+	const token = await randomBytes(32).toString("hex");
+	console.log("token", token);
+	// 사용자를 찾는다 (이메일)
+	const user = await User.findOne({ email: email });
+	if (!user) {
+		console.log("사용자를 찾을수 없습니다.");
+		req.flash("error", `${email} 사용자를 찾을수 없습니다.`);
+		return res.status(401).redirect("/auth/reset");
+	}
+	user.resetToken = token;
+	user.resetTokenExpiration = new Date(Date.now() + 10 * 60 * 60 * 1000);
+	await user.save();
+	// 이메일발송
+
+	const resetUrl = `${req.protocol}://${req.get("host")}/auth/reset/${token}`;
+
+	const msg = `
+		<h1> 비밀번호 초기화 </h1>
+		<p> 
+			클릭하세요 
+			<a href=${resetUrl}> 클릭여기 </a> <br>
+			비밀번호가 초기화 됩니다.
+		</p>
+	`;
+
+	const result = await sendMail2(email, "비밀번호초기화", msg);
+	console.log(result);
+	res.redirect("/");
+};
+
+/**
+ * 1) token 으로 사용자를 찾는다.
+ * @param req
+ * @param res
+ * @param next
+ */
+export const getNewPassword = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { token } = req.params;
+	if (!token) {
+		return res.status(400).redirect("/");
+	}
+
+	const now = new Date(Date.now()).toISOString();
+	console.log(now, Date.now());
+	const user = await User.findOne({
+		resetToken: token,
+		resetTokenExpiration: {
+			$gt: now,
+		},
+	});
+	if (!user) {
+		console.log("유효하지 않은 토큰입니다.");
+		return res.status(401).redirect("/");
+	}
+
+	// 새로운 비밀번호 화면을 제공한다.
+	const msges = req.flash("error");
+	const payload = {
+		docPage: "New Password",
+		path: "new-password",
+		error: msges[0] ? msges[0] : null,
+		userId: user._id.toString(),
+	};
+	res.render("auth/new-password", payload);
+};
+/**
+ * 해당사용자 비밀번호 설정
+ * @param req
+ * @param res
+ * @param next
+ */
+export const postNewPassword = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { userId, password } = req.body;
+
+	if (!userId || !password) {
+		req.flash("error", "사용자 정보 제공 오류");
+		return res.redirect("/auth/new-password");
+	}
+
+	const user = await User.findById(userId);
+	if (!user) {
+		req.flash("error", `${userId} 사용자 정보 제공 오류`);
+		return res.redirect("/auth/new-password");
+	}
+
+	const hassPass = await hashing(password);
+	user.password = hassPass;
+	user.resetToken = undefined;
+	user.resetTokenExpiration = undefined;
+	await user.save();
+
+	res.redirect("/auth/login");
 };
 
 /** 10 적당 */
