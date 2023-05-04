@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/mongoose/user";
 import { hash, genSalt, compare } from "bcrypt";
+import { sendMail } from "../utils/email";
 
 /**
  * 로그인 폼 반환.
@@ -61,7 +62,14 @@ export const postLogin = async (
 
 	req.session.isLogin = true;
 	req.session.user = user._id.toString();
-	console.log(req.session);
+	// console.log(req.session);
+
+	// const result = await sendMail(
+	// 	"t7730@daum.net",
+	// 	"정상적으로 로그인이 되었습니다."
+	// );
+	// console.log(result);
+
 	res.redirect("/");
 };
 

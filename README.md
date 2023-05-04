@@ -227,3 +227,18 @@ app.use(csrfProtection);
 	npm i -D @types/connect-flash
 
 ```
+
+## 이메일 전송
+
+### 메일서버
+
+- SendGrid
+
+```
+	npm i nodemailer;
+	npm i nodemailer-sendgrid npm i -D @types/nodemailer-sendgrid;
+	# 사용안함
+	npm i nodemailer-sendgrid-transport
+```
+
+- Nodemailer
