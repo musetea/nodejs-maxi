@@ -28,6 +28,8 @@ html(lang="en")
                     if !isAuthenticated
                         li 
                             a(class=`${path === "login" ? "active" : "" }`, href="/auth/login") Login
+                        li 
+                            a(class=`${path === "signup" ? "active" : "" }`, href="/auth/signup") Signup
                     else
                         li
                             form(action="/auth/logout" method="POST")  

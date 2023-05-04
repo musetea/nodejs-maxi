@@ -16,6 +16,7 @@ type TUser = {
 	id: Types.ObjectId;
 	name: string;
 	email: string;
+	password: string;
 	cart: {
 		items: TCart[];
 	};
@@ -38,6 +39,10 @@ const schema = new Schema<TUser>({
 		required: true,
 	},
 	email: {
+		type: String,
+		required: true,
+	},
+	password: {
 		type: String,
 		required: true,
 	},

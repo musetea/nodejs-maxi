@@ -6,10 +6,10 @@ export const getOrder = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const items = await req.user.getOrder();
+	// const items = await req.user.getOrder();
 	res.status(200).render("order", {
 		path: "order",
-		items: items,
+		items: null,
 	});
 };
 

@@ -178,3 +178,52 @@ declare module "express-session" {
 	}
 }
 ```
+
+## 인증
+
+- User 의 의미 : 페이지에 방문한 익명의 사용자
+- 모든 제품은 볼수 있다.
+- 로그인한 사용자
+- 모든제품 및 제품을 구매가능하다.
+
+### 인증구현
+
+1. 로그인 요청
+2. 섹션생성 및 (session_id ) 쿠키 제공
+
+3. 비밀번호 암호화 (bcryptjs) 보다 빠름
+
+```
+	npm i bcrypt
+    npm i -D @types/bcrypt
+```
+
+4. CSRF Attacks
+
+- Cross Site Request Forgery
+- CSRF 토근사용
+- [CSRF-CSRF](https://www.npmjs.com/package/csrf-csrf)
+
+```sh
+	# 삭제됨
+	npm i csurf
+	# 대체
+	npm i csrf-csrf
+```
+
+```ts
+import csrf from "csurf";
+const csrfProtection = csrf();
+app.use(csrfProtection);
+```
+
+## 사용자 피드백
+
+[connect-flash]()
+
+```sh
+	#
+	npm i connect-flash
+	npm i -D @types/connect-flash
+
+```

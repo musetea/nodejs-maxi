@@ -6,6 +6,7 @@ block  head
 
 mixin card(product)
     //- #{JSON.stringify(product)}
+    #{`${isAuthenticated}`}
     .card 
         .head 
             h3= product.title

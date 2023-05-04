@@ -4,6 +4,9 @@ block head
     link(rel="stylesheet", href="/css/auth.css")
 block content
     h1 Login 
+    if error 
+        .error-msg
+            p=error
     form.loginform(action="/auth/login", method="POST")
         .control 
             label(for="email") Email 

@@ -20,6 +20,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 		products: items,
 		path: "index",
 		isAuthenticated: req.session.isLogin,
+		// csrfToken: req.csrfToken(),
 	};
 	res.render("index", payload);
 });

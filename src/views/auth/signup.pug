@@ -1,0 +1,25 @@
+extends ../base 
+
+block head
+    link(rel="stylesheet", href="/css/auth.css")
+
+block content
+    h1 Sign Up 
+    if error 
+        .error-msg
+            p=error
+    form.signupForm(action="/auth/signup", method="POST")
+        .control 
+            label(for="name") Name 
+            input#name(type="text", name="name") 
+        .control 
+            label(for="email") Email 
+            input#email(type="email", name="email") 
+        .control 
+            label(for="password") Password 
+            input#password(type="password", name="password") 
+        .control 
+            label(for="passwordConfirm") Confirm Password 
+            input#passwordConfirm(type="password", name="passwordConfirm") 
+        .actions 
+            button(type="submit") SignUp

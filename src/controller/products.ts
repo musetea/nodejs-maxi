@@ -25,7 +25,7 @@ export const getProducts = async (
 		products: items,
 		docTitle: "Product's",
 		path: "products",
-		isAuthenticated: req.session.isLogin,
+		// isAuthenticated: req.session.isLogin,
 	});
 };
 
@@ -101,7 +101,7 @@ export const getEditProduct = async (
 	res.render("product/edit", {
 		product: product,
 		path: "products",
-		isAuthenticated: req.session.isLogin,
+		// isAuthenticated: req.session.isLogin,
 	});
 };
 
@@ -122,7 +122,7 @@ export const getProductById = async (
 		docPage: `${""}  Detail Page`,
 		product: product,
 		path: "products",
-		isAuthenticated: req.session.isLogin,
+		// isAuthenticated: req.session.isLogin,
 	});
 };
 
